@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>For My Love 🌹</title>
+<title>Will You Be My Rose? 🌹</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 body {
@@ -16,128 +16,125 @@ body {
 }
 
 .container {
-    position: relative;
+    position: absolute;
     top: 50%;
-    transform: translateY(-50%);
-    padding: 20px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
 }
 
 h1 {
-    font-size: 2.4em;
+    font-size: 2.2em;
+    margin-bottom: 20px;
 }
 
-.typing {
-    font-size: 1.2em;
-    min-height: 80px;
-    margin-top: 15px;
+.buttons {
+    margin-top: 30px;
+    position: relative;
+    height: 220px;
 }
 
 button {
-    margin-top: 20px;
-    padding: 14px 30px;
-    font-size: 1em;
-    background: white;
-    color: #ff4b7d;
+    padding: 14px 32px;
+    font-size: 1.1em;
     border: none;
     border-radius: 30px;
     cursor: pointer;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.25);
-}
-
-button:hover {
-    transform: scale(1.1);
-}
-
-.rose, .heart {
     position: absolute;
-    top: -40px;
-    font-size: 24px;
-    animation: fall linear infinite;
+    transition: transform 0.2s;
 }
 
-@keyframes fall {
-    to { transform: translateY(110vh) rotate(360deg); }
-}
-
-.popup {
-    position: fixed;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
+#yesBtn {
     background: white;
     color: #ff4b7d;
-    padding: 12px 20px;
-    border-radius: 25px;
-    display: none;
-    font-size: 1em;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
+#yesBtn:hover {
+    transform: translateX(-50%) scale(1.1);
+}
+
+#noBtn {
+    background: rgba(255,255,255,0.35);
+    color: white;
+    left: 20%;
+    top: 100px;
+}
+
+.message {
+    margin-top: 20px;
+    font-size: 1.1em;
+    min-height: 30px;
+}
+
+.emoji {
+    position: absolute;
+    font-size: 24px;
+    animation: floatUp 4s linear infinite;
+}
+
+@keyframes floatUp {
+    from { transform: translateY(0); opacity: 1; }
+    to { transform: translateY(-100vh); opacity: 0; }
+}
 </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>Happy Rose Day 🌹</h1>
-    <div class="typing" id="typing"></div>
-    <button onclick="next()">Tap me 💕</button>
+    <h1>Will you be my Rose? 🌹🥺</h1>
+    <div class="buttons">
+        <button id="yesBtn" onclick="yesClicked()">YES 💖</button>
+        <button id="noBtn" onmouseover="moveNo()" ontouchstart="moveNo()">NO 😏</button>
+    </div>
+    <div class="message" id="msg"></div>
 </div>
 
-<div class="popup" id="popup">You make my heart smile 😘</div>
-
 <script>
-const messages = [
-    "Hey love… 💖",
-    "I just wanted to tell you something special 🌹",
-    "You are my favorite notification 😍",
-    "My safe place, my happiness, my home ❤️",
-    "Every rose reminds me of YOU 🌹",
-    "Happy Rose Day, my love 💕"
+let tries = 0;
+const teasing = [
+    "Hey 😏 that was close!",
+    "Nope nope 😂",
+    "Why are you running? 😜",
+    "Just press YES already 💕",
+    "Okay okay… I know you want to 😌"
 ];
 
-let index = 0;
-let char = 0;
-
-function typeText() {
-    if (char < messages[index].length) {
-        document.getElementById("typing").innerHTML += messages[index].charAt(char);
-        char++;
-        setTimeout(typeText, 50);
-    }
+function moveNo() {
+    tries++;
+    const btn = document.getElementById("noBtn");
+    btn.style.left = Math.random() * 70 + "%";
+    btn.style.top = Math.random() * 140 + "px";
+    document.getElementById("msg").innerText =
+        teasing[Math.min(tries - 1, teasing.length - 1)];
 }
 
-typeText();
-
-function next() {
-    index++;
-    char = 0;
-    document.getElementById("typing").innerHTML = "";
-    if (index < messages.length) {
-        typeText();
-        showPopup();
-    }
+function yesClicked() {
+    document.body.innerHTML = `
+        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;">
+            <h1>I KNEW IT 😍🌹</h1>
+            <p style="font-size:1.3em;">
+                You are my rose,<br>
+                my smile,<br>
+                my favorite person ❤️<br><br>
+                <strong>Happy Rose Day, my love 🌹</strong>
+            </p>
+        </div>
+    `;
+    setInterval(spawnEmoji, 200);
 }
 
-function showPopup() {
-    const popup = document.getElementById("popup");
-    popup.style.display = "block";
-    setTimeout(() => popup.style.display = "none", 2000);
+function spawnEmoji() {
+    const e = document.createElement("div");
+    e.className = "emoji";
+    e.innerText = Math.random() > 0.5 ? "💖" : "🌹";
+    e.style.left = Math.random() * 100 + "vw";
+    e.style.bottom = "0";
+    document.body.appendChild(e);
+    setTimeout(() => e.remove(), 4000);
 }
-
-function createEmoji() {
-    const emoji = document.createElement("div");
-    emoji.classList.add(Math.random() > 0.5 ? "rose" : "heart");
-    emoji.innerText = Math.random() > 0.5 ? "🌹" : "💖";
-    emoji.style.left = Math.random() * 100 + "vw";
-    emoji.style.animationDuration = (3 + Math.random() * 5) + "s";
-    document.body.appendChild(emoji);
-    setTimeout(() => emoji.remove(), 8000);
-}
-
-setInterval(createEmoji, 300);
 </script>
 
 </body>
 </html>
-
-
-
