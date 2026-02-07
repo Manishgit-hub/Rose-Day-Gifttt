@@ -2,78 +2,86 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Will You Be My Rose? 🌹</title>
+<title>For My Moon ji 🌙</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 body {
     margin: 0;
     height: 100vh;
-    background: linear-gradient(135deg, #ff5f9e, #ff9a9e);
+    background: #ffe6ee;
     font-family: 'Segoe UI', sans-serif;
     overflow: hidden;
-    color: white;
     text-align: center;
 }
 
-.container {
+.card {
+    background: #fff5f8;
+    border-radius: 25px;
+    padding: 25px;
+    width: 90%;
+    max-width: 400px;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 90%;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
 }
 
 h1 {
-    font-size: 2.2em;
-    margin-bottom: 20px;
+    color: #ff4b7d;
+    font-size: 1.6em;
+}
+
+h2 {
+    color: #7a1c3d;
 }
 
 .buttons {
     margin-top: 30px;
     position: relative;
-    height: 220px;
+    height: 120px;
 }
 
 button {
-    padding: 14px 32px;
+    padding: 12px 30px;
     font-size: 1.1em;
     border: none;
     border-radius: 30px;
     cursor: pointer;
     position: absolute;
-    transition: transform 0.2s;
 }
 
-#yesBtn {
-    background: white;
-    color: #ff4b7d;
+#yes {
+    background: #ff4b7d;
+    color: white;
     left: 50%;
     transform: translateX(-50%);
 }
 
-#yesBtn:hover {
-    transform: translateX(-50%) scale(1.1);
+#no {
+    background: #ffd1dc;
+    color: #7a1c3d;
+    left: 10%;
+    top: 60px;
 }
 
-#noBtn {
-    background: rgba(255,255,255,0.35);
-    color: white;
-    left: 20%;
-    top: 100px;
+.popup {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    color: #ff4b7d;
+    padding: 12px 20px;
+    border-radius: 20px;
+    display: none;
+    font-size: 0.95em;
 }
-
-.message {
-    margin-top: 20px;
-    font-size: 1.1em;
-    min-height: 30px;
-}
-
-.emoji {
+.heart {
     position: absolute;
-    font-size: 24px;
+    font-size: 22px;
     animation: floatUp 4s linear infinite;
 }
-
 @keyframes floatUp {
     from { transform: translateY(0); opacity: 1; }
     to { transform: translateY(-100vh); opacity: 0; }
@@ -82,57 +90,67 @@ button {
 </head>
 <body>
 
-<div class="container">
-    <h1>Will you be my Rose? 🌹🥺</h1>
+<div class="card">
+    <h1>Hey Moon ji 🌙</h1>
+    <p>I have something to ask you…</p>
+    <h2>Will you be mine forever? 💍</h2>
+
     <div class="buttons">
-        <button id="yesBtn" onclick="yesClicked()">YES 💖</button>
-        <button id="noBtn" onmouseover="moveNo()" ontouchstart="moveNo()">NO 😏</button>
+        <button id="yes" onclick="yesClicked()">YES 💖</button>
+        <button id="no" ontouchstart="noMove()" onmouseover="noMove()">NO 😒</button>
     </div>
-    <div class="message" id="msg"></div>
 </div>
 
-<script>
-let tries = 0;
-const teasing = [
-    "Hey 😏 that was close!",
-    "Nope nope 😂",
-    "Why are you running? 😜",
-    "Just press YES already 💕",
-    "Okay okay… I know you want to 😌"
-];
+<div class="popup" id="popup"></div>
 
-function moveNo() {
-    tries++;
-    const btn = document.getElementById("noBtn");
-    btn.style.left = Math.random() * 70 + "%";
-    btn.style.top = Math.random() * 140 + "px";
-    document.getElementById("msg").innerText =
-        teasing[Math.min(tries - 1, teasing.length - 1)];
+<script>
+const lines = [
+    "Moon ji please 🥹",
+    "Main tumhe hamesha khush rakhunga 💕",
+    "Tum meri duniya ho 🌙",
+    "Ek chance toh banta hai 😭",
+    "I promise, forever ❤️"
+];
+let count = 0;
+
+function noMove() {
+    if (navigator.vibrate) navigator.vibrate(100);
+    const no = document.getElementById("no");
+    no.style.left = Math.random() * 60 + "%";
+    no.style.top = Math.random() * 80 + "px";
+
+    const popup = document.getElementById("popup");
+    popup.innerText = lines[Math.min(count, lines.length - 1)];
+    popup.style.display = "block";
+    setTimeout(() => popup.style.display = "none", 2000);
+    count++;
 }
 
 function yesClicked() {
     document.body.innerHTML = `
-        <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;">
-            <h1>I KNEW IT 😍🌹</h1>
-            <p style="font-size:1.3em;">
-                You are my rose,<br>
-                my smile,<br>
-                my favorite person ❤️<br><br>
-                <strong>Happy Rose Day, my love 🌹</strong>
+        <div class="card">
+            <img src="https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif" width="200"><br><br>
+            <h1>You said YES 😭❤️</h1>
+            <p>
+                Moon ji,<br>
+                I just want YOU.<br>
+                Your flaws. Your mistakes.<br>
+                All of you ❤️
             </p>
+            <h2>Deepika & Manish 💕</h2>
         </div>
     `;
-    setInterval(spawnEmoji, 200);
+    setInterval(spawnHeart, 200);
 }
 
-function spawnEmoji() {
-    const e = document.createElement("div");
-    e.className = "emoji";
-    e.innerText = Math.random() > 0.5 ? "💖" : "🌹";
-    e.style.left = Math.random() * 100 + "vw";
-    e.style.bottom = "0";
-    document.body.appendChild(e);
-    setTimeout(() => e.remove(), 4000);
+function spawnHeart() {
+    const h = document.createElement("div");
+    h.className = "heart";
+    h.innerText = Math.random() > 0.5 ? "💖" : "🌹";
+    h.style.left = Math.random() * 100 + "vw";
+    h.style.bottom = "0";
+    document.body.appendChild(h);
+    setTimeout(() => h.remove(), 4000);
 }
 </script>
 
